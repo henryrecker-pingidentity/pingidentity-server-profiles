@@ -16,7 +16,8 @@ dsconfig create-monitoring-endpoint \
 # Enable the Stats Collector
 dsconfig set-plugin-prop \
     --plugin-name "Stats Collector" \
-    --set enabled:true
+    --set enabled:true \
+    --set server-info:extended
 
 # Enable the Periodic Stats Logger
 dsconfig set-plugin-prop \
