@@ -1,8 +1,8 @@
 dsconfig create-location \
     --location-name thirdlocation
 
-dsconfig create-local-db-index \
-    --backend-name userRoot \
-    --index-name description \
-    --set index-type:equality \
-    --set index-type:substring
+#dsconfig create-local-db-index \
+#    --backend-name userRoot \
+#    --index-name description \
+#    --set index-type:equality \
+#    --set index-type:substring
