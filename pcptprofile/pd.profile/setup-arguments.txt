@@ -28,6 +28,6 @@
     --maxHeapSize 768m \
     --generateSelfSignedCertificate \
     --encryptDataWithRandomPassphrase \
-    --rootUserDN "cn=Directory Manager" \
+    --rootUserDN "cn=administrator" \
     --rootUserPassword 2FederateM0re \
     --allowWeakRootUserPassword
