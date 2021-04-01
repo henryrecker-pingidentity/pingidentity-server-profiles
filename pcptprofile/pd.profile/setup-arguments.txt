@@ -19,7 +19,6 @@
     --verbose \
     --acceptLicense \
     --skipPortCheck \
-    --licenseKeyFile /Users/henryrecker/Licenses/8.x/PingDirectory.lic \
     --location local \
     --instanceName ${INSTANCE_NAME} \
     --ldapPort ${LDAP_PORT} \
@@ -30,5 +29,5 @@
     --generateSelfSignedCertificate \
     --encryptDataWithRandomPassphrase \
     --rootUserDN "cn=Directory Manager" \
-    --rootUserPassword password \
+    --rootUserPassword 2FederateM0re \
     --allowWeakRootUserPassword
