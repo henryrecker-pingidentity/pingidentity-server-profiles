@@ -240,6 +240,9 @@
         "id": 2,
         "alias": "pingaccess",
         "fileData": "${PRIVATE_KEYSTORE}",
+        "password": {
+            "value": "${PRIVATE_KEYSTORE_PIN}"
+        },
         "hsmProviderId": 0
       }
     ],
