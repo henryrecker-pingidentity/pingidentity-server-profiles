@@ -202,35 +202,30 @@
       {
         "id": 1,
         "name": "ADMIN",
-        "keyPairId": 2,
         "useServerCipherSuiteOrder": true,
         "restartRequired": false
       },
       {
         "id": 2,
         "name": "ENGINE",
-        "keyPairId": 2,
         "useServerCipherSuiteOrder": true,
         "restartRequired": false
       },
       {
         "id": 3,
         "name": "AGENT",
-        "keyPairId": 2,
         "useServerCipherSuiteOrder": true,
         "restartRequired": false
       },
       {
         "id": 4,
         "name": "CONFIG QUERY",
-        "keyPairId": 2,
         "useServerCipherSuiteOrder": true,
         "restartRequired": false
       },
       {
         "id": 5,
         "name": "SIDEBAND",
-        "keyPairId": 2,
         "useServerCipherSuiteOrder": true,
         "restartRequired": false
       }
