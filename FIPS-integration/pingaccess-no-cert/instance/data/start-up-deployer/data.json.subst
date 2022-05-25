@@ -198,38 +198,6 @@
     "httpProtocolSource": {
       "headerName": "X-Forwarded-Proto"
     },
-    "httpsListeners": [
-      {
-        "id": 1,
-        "name": "ADMIN",
-        "useServerCipherSuiteOrder": true,
-        "restartRequired": false
-      },
-      {
-        "id": 2,
-        "name": "ENGINE",
-        "useServerCipherSuiteOrder": true,
-        "restartRequired": false
-      },
-      {
-        "id": 3,
-        "name": "AGENT",
-        "useServerCipherSuiteOrder": true,
-        "restartRequired": false
-      },
-      {
-        "id": 4,
-        "name": "CONFIG QUERY",
-        "useServerCipherSuiteOrder": true,
-        "restartRequired": false
-      },
-      {
-        "id": 5,
-        "name": "SIDEBAND",
-        "useServerCipherSuiteOrder": true,
-        "restartRequired": false
-      }
-    ],
     "loadBalancingStrategies": [
       {
         "className": "com.pingidentity.pa.ha.lb.roundrobin.CookieBasedRoundRobinPlugin",
