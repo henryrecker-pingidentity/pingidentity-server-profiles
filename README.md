@@ -1,1 +1,1 @@
-See [server profiles](https://pingidentity-devops.gitbook.io/devops/config) docs on gitbook for more information.
+See [Deploy a PingAccess cluster](https://pingidentity-devops.gitbook.io/devops/deploy/deploycompose/deploypacluster) for more information. 
