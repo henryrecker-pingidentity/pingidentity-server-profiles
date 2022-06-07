@@ -14,5 +14,4 @@
 # 
 
 export PA_LOG_LEVEL=${PA_LOG_LEVEL:=INFO}
-export PA_CONSOLE_HOST=${PA_CONSOLE_HOST:=pingaccess-admin}
 export PING_IDENTITY_PASSWORD=${PING_IDENTITY_PASSWORD:=2FederateM0re}
