@@ -81,7 +81,7 @@
                         org.sourceid.saml20.service.impl.AccountLinkingServiceDBImpl    : Use this service-point for a database implementation
                         org.sourceid.saml20.service.impl.AccountLinkingServiceLDAPImpl  : Use this service-point for an LDAP implementation
         -->
-        <create-instance model="autoreloadable" class="org.sourceid.saml20.service.impl.AccountLinkingServiceLDAPImpl"/>
+        <create-instance model="autoreloadable" class="org.sourceid.saml20.service.impl.AccountLinkingServiceDBImpl"/>
     </service-point>
 
     <!-- Service for storage of access grants -->
@@ -92,8 +92,9 @@
                         org.sourceid.oauth20.token.AccessGrantManagerLDAPADImpl             : Use this service-point for a Microsoft Active Directory implementation
                         org.sourceid.oauth20.token.AccessGrantManagerLDAPOracleImpl         : Use this service-point for a Oracle Directory Server Enterprise Edition implementation
                         org.sourceid.oauth20.token.AccessGrantManagerLDAPPingDirectoryImpl  : Use this service-point for a PingDirectory implementation
+                        org.sourceid.oauth20.token.AccessGrantManagerDynamoDBImpl           : Use this service-point for an Amazon DynamoDB implementation
         -->
-        <create-instance model="autoreloadable" class="org.sourceid.oauth20.token.AccessGrantManagerLDAPPingDirectoryImpl"/>
+        <create-instance model="autoreloadable" class="org.sourceid.oauth20.token.AccessGrantManagerJdbcImpl"/>
     </service-point>
 
     <!-- Service/adapter for creating pseudonym name ids -->
@@ -152,7 +153,7 @@
                         org.sourceid.oauth20.domain.ClientManagerLdapImpl               : Use this service-point for a LDAP implementation.
                         org.sourceid.oauth20.domain.ClientManagerGenericImpl            : Use this service-point if you have specified a custom ClientStorageManager implementation above.
             -->
-            <construct class="org.sourceid.oauth20.domain.ClientManagerLdapImpl"/>
+            <construct class="org.sourceid.oauth20.domain.ClientManagerXmlFileImpl"/>
         </invoke-factory>
     </service-point>
 
@@ -164,7 +165,7 @@
                         org.sourceid.saml20.service.session.data.impl.SessionStorageManagerJdbcImpl : Use this service-point for a Jdbc implementation.
                         org.sourceid.saml20.service.session.data.impl.SessionStorageManagerLdapImpl : Use this service-point for a LDAP implementation.
             -->
-            <construct class="org.sourceid.saml20.service.session.data.impl.SessionStorageManagerLdapImpl"/>
+            <construct class="org.sourceid.saml20.service.session.data.impl.SessionStorageManagerJdbcImpl"/>
         </invoke-factory>
     </service-point>
 
