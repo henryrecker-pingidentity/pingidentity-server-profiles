@@ -1,0 +1,64 @@
+# From https://docs.pingidentity.com/bundle/pingdirectory-91/page/non1574358138251_1.html
+dsconfig create-scim-schema \
+    --schema-name urn:pingidentity:schemas:User:1.0 \
+    --set display-name:User
+
+dsconfig create-scim-attribute \
+    --schema-name urn:pingidentity:schemas:User:1.0 \
+    --attribute-name displayName
+
+dsconfig create-scim-attribute \
+    --schema-name urn:pingidentity:schemas:User:1.0 \
+    --attribute-name name \
+    --set type:complex
+
+dsconfig create-scim-subattribute \
+    --schema-name urn:pingidentity:schemas:User:1.0 \
+    --attribute-name name \
+    --subattribute-name familyName
+
+dsconfig create-scim-subattribute \
+    --schema-name urn:pingidentity:schemas:User:1.0 \
+    --attribute-name name \
+    --subattribute-name formatted
+
+dsconfig create-scim-attribute \
+    --schema-name urn:pingidentity:schemas:User:1.0 \
+    --attribute-name userName
+
+dsconfig create-scim-resource-type \
+    --type-name Users \
+    --type ldap-mapping \
+    --set enabled:true \
+    --set endpoint:Users \
+    --set structural-ldap-objectclass:inetOrgPerson \
+    --set include-base-dn:ou=People,dc=example,dc=com \
+    --set lookthrough-limit:500 \
+    --set core-schema:urn:pingidentity:schemas:User:1.0
+
+dsconfig create-scim-attribute-mapping \
+    --type-name Users \
+    --mapping-name displayName \
+    --set scim-resource-type-attribute:displayName \
+    --set ldap-attribute:displayName
+
+dsconfig create-scim-attribute-mapping \
+    --type-name Users \
+    --mapping-name name.formatted \
+    --set scim-resource-type-attribute:name.formatted \
+    --set ldap-attribute:cn \
+    --set searchable:true
+
+dsconfig create-scim-attribute-mapping \
+    --type-name Users \
+    --mapping-name name.familyName \
+    --set scim-resource-type-attribute:name.familyName \
+    --set ldap-attribute:sn \
+    --set searchable:true
+
+dsconfig create-scim-attribute-mapping \
+    --type-name Users \
+    --mapping-name userName \
+    --set scim-resource-type-attribute:userName \
+    --set ldap-attribute:uid \
+    --set searchable:true
