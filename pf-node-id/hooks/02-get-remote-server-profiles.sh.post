@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "${HOOKS_DIR}/pingcommon.lib.sh"
+
+# Parse the pod ordinal
+PF_PROVISIONER_NODE_ID=${POD_NAME##*-}
+
+# Save the node id to the environment used by the hook scripts
+export_container_env PF_PROVISIONER_NODE_ID
+
