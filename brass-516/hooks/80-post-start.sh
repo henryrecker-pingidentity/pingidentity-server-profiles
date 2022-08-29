@@ -20,6 +20,28 @@ test -f "${HOOKS_DIR}/pingdirectory.lib.sh" && . "${HOOKS_DIR}/pingdirectory.lib
 # to enable replication
 if ! prepareToJoinTopology; then
     echo "Replication will not be configured."
+
+
+
+
+    ### NEW SECTION START ###
+    set -x
+    if test -z "${NEW_KEYSTORE_FILE}"; then
+      echo "No NEW_KEYSTORE_FILE value set, skipping replace-certificate"
+    elif test -z "${NEW_KEYSTORE_PIN_FILE}"; then
+      echo "No NEW_KEYSTORE_PIN_FILE value set, skipping replace-certificate"
+    else
+      replace-certificate replace-listener-certificate --bindDN cn=administrator --bindPassword 2FederateM0re --key-manager-provider JKS --trust-manager-provider JKS --source-key-store-file "${NEW_KEYSTORE_FILE}" --source-key-store-password-file "${NEW_KEYSTORE_PIN_FILE}" --source-certificate-alias server-cert --reload-http-connection-handler-certificates
+    fi
+    set +x
+    ### NEW SECTION END ###
+
+
+
+
+
+
+
     set_server_available online
 
     exit 0
