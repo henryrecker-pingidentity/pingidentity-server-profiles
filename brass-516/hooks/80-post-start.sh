@@ -81,6 +81,21 @@ echo "Replication enable for POD Server result=${_replEnableResult}"
 
 if test ${_replEnableResult} -ne 0; then
     echo "Not running dsreplication initialize since enable failed with a non-successful return code"
+
+    ### NEW SECTION START ###
+    set -x
+    if test -z "${NEW_KEYSTORE_FILE}"; then
+      echo "No NEW_KEYSTORE_FILE value set, skipping replace-certificate"
+    elif test -z "${NEW_KEYSTORE_PIN_FILE}"; then
+      echo "No NEW_KEYSTORE_PIN_FILE value set, skipping replace-certificate"
+    else
+      replace-certificate replace-listener-certificate --bindDN cn=administrator --bindPassword 2FederateM0re --key-manager-provider JKS --trust-manager-provider JKS --source-key-store-file "${NEW_KEYSTORE_FILE}" --source-key-store-password-file "${NEW_KEYSTORE_PIN_FILE}" --source-certificate-alias server-cert --reload-http-connection-handler-certificates
+    fi
+    set +x
+    ### NEW SECTION END ###
+
+
+
     exit ${_replEnableResult}
 fi
 
