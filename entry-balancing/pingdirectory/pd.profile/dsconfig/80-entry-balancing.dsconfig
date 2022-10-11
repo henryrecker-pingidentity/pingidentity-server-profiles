@@ -1,6 +1,6 @@
 dsconfig --no-prompt create-backend \
     --backend-name dataset --type local-db --set enabled:true \ 
-    --set base-dn:ou=people,dc=example,dc=com   
+    --set base-dn:ou=people,${USER_BASE_DN}
 
 dsconfig --no-prompt \
     set-global-configuration-prop \
