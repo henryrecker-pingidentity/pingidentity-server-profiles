@@ -1,7 +1,8 @@
-dsconfig --no-prompt create-backend \
-    --backend-name dataset --type local-db --set enabled:true \ 
-    --set base-dn:ou=people,${USER_BASE_DN}
+dsconfig create-backend \
+    --backend-name dataset \
+    --type local-db \
+    --set enabled:true \
+    --set "base-dn:ou=people,${USER_BASE_DN}"
 
-dsconfig --no-prompt \
-    set-global-configuration-prop \
-    --set replication-set-name:${REPLICATION_SET_NAME}
+dsconfig set-global-configuration-prop \
+    --set "replication-set-name:${REPLICATION_SET_NAME}"
