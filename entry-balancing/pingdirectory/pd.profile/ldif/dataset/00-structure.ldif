@@ -1,0 +1,7 @@
+dn: ou=people,${USER_BASE_DN}
+aci: (targetattr="*")(version 3.0; acl "allow self-manage"; allow(all) userdn="ldap:///self";)
+aci: (targetAttr="*")(version 3.0; acl "admin rights"; allow(all) userdn="ldap:///uid=administrator,ou=People,${USER_BASE_DN}";)
+objectClass: top
+objectClass: organizationalUnit
+ou: People
+
