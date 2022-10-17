@@ -42,11 +42,20 @@ dsconfig create-root-dn-user \
 # Create a user for pingdirectoryproxy 
 #
 dsconfig create-root-dn-user \
-    --user-name pingdirectoryproxy  \
-    --set alternate-bind-dn:cn=pingdirectoryproxy  \
-    --set alternate-bind-dn:cn=proxy  \
+    --user-name "Proxy User" \
+    --set "alternate-bind-dn:cn=Proxy User" \
+    --set alternate-bind-dn:cn=pingdirectoryproxy \
+    --set alternate-bind-dn:cn=proxy \
+    --set password<${ROOT_USER_PASSWORD_FILE} \
+    --set inherit-default-root-privileges:false \
+    --set privilege:bypass-acl \
+    --set privilege:config-read \
+    --set privilege:lockdown-mode \
+    --set privilege:permit-forwarding-client-connection-policy \
+    --set privilege:permit-get-password-policy-state-issues \
+    --set privilege:permit-proxied-mschapv2-details \
     --set privilege:proxied-auth \
-    --set password<${ROOT_USER_PASSWORD_FILE}
+    --set privilege:stream-values
 
 #
 # Create a user for pingauthorize
