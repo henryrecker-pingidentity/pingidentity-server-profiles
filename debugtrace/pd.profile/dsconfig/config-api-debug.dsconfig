@@ -1,0 +1,8 @@
+dsconfig create-debug-target \
+    --publisher-name "File-Based Debug Logger" \
+    --target-name com.unboundid.directory.server.admin.api.DSConfigRequest \
+    --set debug-level:all
+
+dsconfig set-log-publisher-prop \
+    --publisher-name "File-Based Debug Logger" \
+    --set enabled:true
