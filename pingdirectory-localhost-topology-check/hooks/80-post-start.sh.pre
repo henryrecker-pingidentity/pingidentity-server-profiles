@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+#
+# Ping Identity DevOps - Docker Build Hooks
+
+test "${VERBOSE}" = "true" && set -x
+
+sed -i 's/--hostname "${POD_HOSTNAME}"/--hostname localhost/g' "/opt/staging/hooks/pingdata.lib.sh"
+
