@@ -4,5 +4,8 @@
 
 test "${VERBOSE}" = "true" && set -x
 
+echo "Switching topology check to localhost in 80-post-start.sh.pre"
 sed -i 's/--hostname "${POD_HOSTNAME}"/--hostname localhost/g' "/opt/staging/hooks/pingdata.lib.sh"
 
+echo "Updated pingdata.lib.sh:"
+cat /opt/staging/hooks/pingdata.lib.sh
