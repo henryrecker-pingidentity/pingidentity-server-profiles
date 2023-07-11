@@ -1,0 +1,30 @@
+# Enable the blind trust manager provider
+dsconfig set-trust-manager-provider-prop \
+    --provider-name "Blind Trust" \
+    --set enabled:true
+
+# Create a StatsD monitoring endpoint
+dsconfig create-monitoring-endpoint \
+    --type statsd \
+    --endpoint-name StatsDTestEndpoint \
+    --set enabled:true \
+    --set hostname:localhost \
+    --set server-port:8125 \
+    --set connection-type:unencrypted-udp \
+    --set "trust-manager-provider:Blind Trust"
+
+# Enable the Stats Collector
+dsconfig set-plugin-prop \
+    --plugin-name "Stats Collector" \
+    --set enabled:true \
+    --set server-info:extended
+
+# Enable the Periodic Stats Logger
+dsconfig set-plugin-prop \
+    --plugin-name "Stats Logger" \
+    --set enabled:true \
+    --set local-db-backend-info:extended \
+    --set header-prefix-per-column:true \
+    --set empty-instead-of-zero:false \
+    --set lines-between-header:0 \
+    --set log-file-format:json
