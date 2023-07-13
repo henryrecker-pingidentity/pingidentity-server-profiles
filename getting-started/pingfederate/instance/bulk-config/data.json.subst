@@ -215,28 +215,6 @@
         },
         {
             "operationType": "SAVE",
-            "items": [{
-                "activeRuntimeServerCerts": [{
-                    "location": "https://localhost:-1/pf-admin-api/v1/keyPairs/sslServer/vtcm75en83g6v1r87ytm7lihi",
-                    "id": "vtcm75en83g6v1r87ytm7lihi"
-                }],
-                "activeAdminConsoleCerts": [{
-                    "location": "https://localhost:-1/pf-admin-api/v1/keyPairs/sslServer/vtcm75en83g6v1r87ytm7lihi",
-                    "id": "vtcm75en83g6v1r87ytm7lihi"
-                }],
-                "adminConsoleCertRef": {
-                    "location": "https://localhost:-1/pf-admin-api/v1/keyPairs/sslServer/vtcm75en83g6v1r87ytm7lihi",
-                    "id": "vtcm75en83g6v1r87ytm7lihi"
-                },
-                "runtimeServerCertRef": {
-                    "location": "https://localhost:-1/pf-admin-api/v1/keyPairs/sslServer/vtcm75en83g6v1r87ytm7lihi",
-                    "id": "vtcm75en83g6v1r87ytm7lihi"
-                }
-            }],
-            "resourceType": "/keyPairs/sslServer/settings"
-        },
-        {
-            "operationType": "SAVE",
             "items": [{"staticJwksEnabled": false}],
             "resourceType": "/keyPairs/oauthOpenIdConnect"
         },
