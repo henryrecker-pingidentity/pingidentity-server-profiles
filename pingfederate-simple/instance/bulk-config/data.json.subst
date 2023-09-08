@@ -107,16 +107,6 @@
         },
         {
             "operationType": "SAVE",
-            "subResource": "org.sourceid.common.ExpressionManager",
-            "items": [{
-                "stringValue": "",
-                "id": "evaluateExpressions",
-                "type": "STRING"
-            }],
-            "resourceType": "/configStore"
-        },
-        {
-            "operationType": "SAVE",
             "subResource": "org.sourceid.oauth20.domain.ClientManagerXmlFileImpl",
             "items": [{
                 "stringValue": "true",
