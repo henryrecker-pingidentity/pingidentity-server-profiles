@@ -3,6 +3,14 @@
     "operations": [
         {
             "operationType": "SAVE",
+            "items": [{
+                "accepted": true,
+                "licenseAgreementUrl": "https://${PF_ADMIN_PUBLIC_HOSTNAME}:${PF_ADMIN_PUBLIC_PORT_HTTPS}/pf-admin-api/license-agreement"
+            }],
+            "resourceType": "/license/agreement"
+        },
+        {
+            "operationType": "SAVE",
             "items": [
                 {
                     "hostnamesTags": [{
