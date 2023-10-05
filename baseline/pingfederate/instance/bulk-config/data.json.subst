@@ -167,6 +167,37 @@
                 }
             ],
             "resourceType": "/passwordCredentialValidators"
-        }
+        },
+        {
+            "operationType": "SAVE",
+            "items": [{
+                "password": "${PRIVATE_KEYSTORE_PIN}",
+                "fileData": "${PRIVATE_KEYSTORE}",
+                "id": "sslservercert"
+            }],
+            "resourceType": "/keyPairs/sslServer"
+        },
+        {
+            "operationType": "SAVE",
+            "items": [{
+                "activeRuntimeServerCerts": [{
+                    "location": "https://${PF_ADMIN_PUBLIC_HOSTNAME}:${PF_ADMIN_PUBLIC_PORT_HTTPS}/pf-admin-api/v1/keyPairs/sslServer/sslservercert",
+                    "id": "sslservercert"
+                }],
+                "activeAdminConsoleCerts": [{
+                    "location": "https://${PF_ADMIN_PUBLIC_HOSTNAME}:${PF_ADMIN_PUBLIC_PORT_HTTPS}/pf-admin-api/v1/keyPairs/sslServer/sslservercert",
+                    "id": "sslservercert"
+                }],
+                "adminConsoleCertRef": {
+                    "location": "https://${PF_ADMIN_PUBLIC_HOSTNAME}:${PF_ADMIN_PUBLIC_PORT_HTTPS}/pf-admin-api/v1/keyPairs/sslServer/sslservercert",
+                    "id": "sslservercert"
+                },
+                "runtimeServerCertRef": {
+                    "location": "https://${PF_ADMIN_PUBLIC_HOSTNAME}:${PF_ADMIN_PUBLIC_PORT_HTTPS}/pf-admin-api/v1/keyPairs/sslServer/sslservercert",
+                    "id": "sslservercert"
+                }
+            }],
+            "resourceType": "/keyPairs/sslServer/settings"
+        },
     ]
 }
