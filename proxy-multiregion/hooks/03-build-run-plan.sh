@@ -13,6 +13,26 @@
 
 test "${VERBOSE}" = "true" && set -x
 
+# Set run plan defaults
+RUN_PLAN="UNKNOWN"
+
+SERVER_UUID_FILE="${SERVER_ROOT_DIR}/config/server.uuid"
+
+if test -f "${SERVER_UUID_FILE}"; then
+    RUN_PLAN="RESTART"
+else
+    RUN_PLAN="START"
+fi
+
+INSTANCE_NAME=$(getPingDataInstanceName)
+
+echo_header "Run Plan Information"
+echo_vars RUN_PLAN INSTANCE_NAME serverUUID
+echo_bar
+
+export_container_env RUN_PLAN INSTANCE_NAME
+
+# Set run plan for joining PD topology if necessary
 if test "$(toLower "${JOIN_PD_TOPOLOGY}")" != "true"; then
     echo "Backend discovery for PingDirectoryProxy will not be configured, because JOIN_PD_TOPOLOGY is not set to true."
     exit 0
