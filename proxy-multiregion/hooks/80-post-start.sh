@@ -19,13 +19,13 @@ if test "$(toLower "${JOIN_PD_TOPOLOGY}")" != "true"; then
     exit 0
 fi
 
-#if ! prepareToJoinTopology; then
-#    echo "Backend discovery for PingDirectoryProxy will not be configured."
-#    #TODO set unavailable in an earlier hook for proxy? if so, need another set available call above
-#    #set_server_available online
-#
-#    exit 0
-#fi
+if ! prepareToJoinTopology; then
+    echo "Backend discovery for PingDirectoryProxy will not be configured."
+    #TODO set unavailable in an earlier hook for proxy? if so, need another set available call above
+    #set_server_available online
+
+    exit 0
+fi
 
 _podName=$(getHostName)
 echo "Waiting until ${PING_PRODUCT} service is running on this Server (${POD_HOSTNAME:?})"

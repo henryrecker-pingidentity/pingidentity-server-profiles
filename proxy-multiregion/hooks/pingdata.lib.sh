@@ -918,27 +918,23 @@ buildRunPlan() {
             fi
         fi
 
-        echo "#
+        echo "    #
     #         K8S_STATEFUL_SET_NAME: ${K8S_STATEFUL_SET_NAME}
     # K8S_STATEFUL_SET_SERVICE_NAME: ${K8S_STATEFUL_SET_SERVICE_NAME}
     #
     #                  K8S_CLUSTERS: ${K8S_CLUSTERS}  (${_clusterMode} cluster)
     #                   K8S_CLUSTER: ${K8S_CLUSTER}" >> "${_planSteps}"
         if ! test "${PING_PRODUCT}" = "PingDirectoryProxy"; then
-            echo "
-    #              K8S_SEED_CLUSTER: ${K8S_SEED_CLUSTER}" >> "${_planSteps}"
+            echo "    #              K8S_SEED_CLUSTER: ${K8S_SEED_CLUSTER}" >> "${_planSteps}"
         fi
-        echo "
-    #              K8S_NUM_REPLICAS: ${K8S_NUM_REPLICAS}
+        echo "    #              K8S_NUM_REPLICAS: ${K8S_NUM_REPLICAS}
     #       K8S_POD_HOSTNAME_PREFIX: ${K8S_POD_HOSTNAME_PREFIX}
     #       K8S_POD_HOSTNAME_SUFFIX: ${K8S_POD_HOSTNAME_SUFFIX}" >> "${_planSteps}"
         if ! test "${PING_PRODUCT}" = "PingDirectoryProxy"; then
-            echo "
-    #      K8S_SEED_HOSTNAME_PREFIX: ${K8S_SEED_HOSTNAME_PREFIX}
+            echo "    #      K8S_SEED_HOSTNAME_PREFIX: ${K8S_SEED_HOSTNAME_PREFIX}
     #      K8S_SEED_HOSTNAME_SUFFIX: ${K8S_SEED_HOSTNAME_SUFFIX}" >> "${_planSteps}"
         fi
-        echo "
-    #           K8S_INCREMENT_PORTS: ${K8S_INCREMENT_PORTS} (${_incrementPortsMsg})
+        echo "    #           K8S_INCREMENT_PORTS: ${K8S_INCREMENT_PORTS} (${_incrementPortsMsg})
     #
     #" >> "${_planSteps}"
 
@@ -1285,6 +1281,13 @@ buildRunPlan() {
         echo "${_separatorRow}" >> "${_fullPlan}"
     fi
 
+    if test "${PING_PRODUCT}" = "PingDirectoryProxy"; then
+        # Print PD address information - may remove this if proxy determines the PD address dynamically
+        echo "
+This PingDirectoryProxy server will join the following PingDirectory server: ${PINGDIRECTORY_HOSTNAME}:${PINGDIRECTORY_LDAPS_PORT}
+" >> "${_fullPlan}"
+    fi
+
     # Print out the full plan
     cat "${_fullPlan}"
 
@@ -1376,7 +1379,6 @@ prepareToJoinTopology() {
     #
     #- * Check to see if PD_STATE is GENESIS.  If so, no replication or failover will be performed
     #
-    #TODO handle differently for proxy
     if test "${PD_STATE}" = "GENESIS"; then
         if test "${PING_PRODUCT}" = "PingDirectory"; then
             echo "PD_STATE is GENESIS ==> Replication on this server won't be set up until more instances are added"
@@ -1386,19 +1388,21 @@ prepareToJoinTopology() {
         return 1
     fi
 
-    if test -z "${_seedInstanceName}" || test -z "${SEED_HOSTNAME}" || test -z "${SEED_LDAPS_PORT}"; then
-        if test "${PING_PRODUCT}" = "PingDirectory"; then
-            echo "PingDirectory replication will not be configured. Seed server could not be determined."
-        # TODO
-        else
-            echo "PingDataSync failover will not be configured. Seed server could not be determined."
+    # Proxy has no notion of a seed server
+    if ! test "${PING_PRODUCT}" = "PingDirectoryProxy"; then
+        if test -z "${_seedInstanceName}" || test -z "${SEED_HOSTNAME}" || test -z "${SEED_LDAPS_PORT}"; then
+            if test "${PING_PRODUCT}" = "PingDirectory"; then
+                echo "PingDirectory replication will not be configured. Seed server could not be determined."
+            else
+                echo "PingDataSync failover will not be configured. Seed server could not be determined."
+            fi
+            return 1
         fi
-        return 1
     fi
 
     #Change the seed build out for pingDirectory-0 server that has been restarted and it's pvc lost
-    #TODO make sure this won't apply for proxy
-    if test "${_podInstanceName}" = "${_seedInstanceName}" &&
+    if ! test "${PING_PRODUCT}" = "PingDirectoryProxy" &&
+        test "${_podInstanceName}" = "${_seedInstanceName}" &&
         test "${PD_STATE}" = "SETUP" && test "${ORCHESTRATION_TYPE}" = "KUBERNETES"; then
         #TODO: GDO-997 multi-region may need to look for local cluster OR remote cluster for a seed.
         _IPList=$(getIPsForDomain "${K8S_STATEFUL_SET_SERVICE_NAME}")
@@ -1415,29 +1419,42 @@ prepareToJoinTopology() {
     fi
 
     #
-    #- * Ensure the Seed Server is accepting queries
+    #- * Ensure the Seed Server is accepting queries for Directory and Sync,
+    #- * and ensure the target Directory server is accepting queries for Proxy
     #
-    echo "Running ldapsearch test on SEED Server (${_seedInstanceName:?})"
-    echo "        ${SEED_HOSTNAME:?}:${SEED_LDAPS_PORT:?}"
-    waitUntilLdapUp "${SEED_HOSTNAME}" "${SEED_LDAPS_PORT}" ""
+    if test "${PING_PRODUCT}" = "PingDirectoryProxy"; then
+        echo "Running ldapsearch test on PingDirectory server"
+        echo "        ${PINGDIRECTORY_HOSTNAME}:${PINGDIRECTORY_LDAPS_PORT}"
+        waitUntilLdapUp "${PINGDIRECTORY_HOSTNAME}" "${PINGDIRECTORY_LDAPS_PORT}" ""
+    else
+        echo "Running ldapsearch test on SEED Server (${_seedInstanceName:?})"
+        echo "        ${SEED_HOSTNAME:?}:${SEED_LDAPS_PORT:?}"
+        waitUntilLdapUp "${SEED_HOSTNAME}" "${SEED_LDAPS_PORT}" ""
+    fi
 
     #
     #- * Check the topology prior to enabling replication or failover
     #
     _priorTopoFile="/tmp/priorTopology.json"
     rm -rf "${_priorTopoFile}"
+    _targetHostname="${SEED_HOSTNAME}"
+    _targetLdapsPort="${SEED_LDAPS_PORT}"
+    # Proxy uses a defined PD server rather than a seed server
+    if test "${PING_PRODUCT}" = "PingDirectoryProxy"; then
+        _targetHostname="${PINGDIRECTORY_HOSTNAME}"
+        _targetLdapsPort="${PINGDIRECTORY_LDAPS_PORT}"
+    fi
     manage-topology export \
-        --hostname "${SEED_HOSTNAME}" \
-        --port "${SEED_LDAPS_PORT}" \
+        --hostname "${_targetHostname}" \
+        --port "${_targetHostname}" \
         --exportFilePath "${_priorTopoFile}"
     _priorNumInstances=$(jq ".serverInstances | length" "${_priorTopoFile}")
 
     #
-    #- * If this server is already in a prior topology, then replication or failover may already be enabled.
+    #- * If this server is already in a prior topology, then replication/failover/backend discovery may already be enabled.
     #- * It is also possible that this server has lost its volume and isn't aware of the topology.
     #- * When that is the case, run remove-defunct-server and re-add this server to the topology from the seed server.
     #
-    #TODO does this already handle proxy being restarted with no volume?
     if test ! -z "$(jq -r ".serverInstances[] | select(.instanceName==\"${_podInstanceName}\") | .instanceName" "${_priorTopoFile}")"; then
         # Get the topology according to this instance if possible.
         _currentTopoFile="/tmp/currentTopology.json"
@@ -1448,7 +1465,7 @@ prepareToJoinTopology() {
             --exportFilePath "${_currentTopoFile}"
         _returnCode=$?
 
-        # Check if manage-topology was successfull
+        # Check if manage-topology was successful
         if test ${_returnCode} -ne 0; then
             echo_red "**********"
             echo_red "Failed to run the manage-topology tool while setting up the topology"
@@ -1457,7 +1474,9 @@ prepareToJoinTopology() {
         fi
 
         # Check if this server knows about the seed server.
-        if test -z "$(jq -r ".serverInstances[] | select(.instanceName==\"${_seedInstanceName}\") | .instanceName" "${_currentTopoFile}")"; then
+        #TODO test this if logic
+        if { test "${PING_PRODUCT}" = "PingDirectoryProxy" && test -z "$(jq -r ".serverInstances[] | select(.hostname==\"${PINGDIRECTORY_HOSTNAME}\") | .hostname" "${_currentTopoFile}")"; } ||
+            test -z "$(jq -r ".serverInstances[] | select(.instanceName==\"${_seedInstanceName}\") | .instanceName" "${_currentTopoFile}")"; then
             # If this instance does not think it is in the seed server's topology, then it may have lost its volume.
             # Remove the remnants of this server from the seed server's topology so it can be re-added below.
             echo_yellow "Seed server topology and local topology are out of sync. Running remove-defunct-server before re-adding this server to the topology."
@@ -1481,20 +1500,30 @@ prepareToJoinTopology() {
             _priorNumInstances=$((_priorNumInstances - 1))
         else
             # If the server knows about the seed server's topology locally, then everything is good.
-            if test "${PING_PRODUCT}" = "PingDirectory"; then
-                echo "This instance (${_podInstanceName}) is already found in topology --> No need to enable replication"
-                dsreplication status --displayServerTable --showAll
-            else
-                echo "This instance (${_podInstanceName}) is already found in topology --> No need to enable failover"
-            fi
+            case "${PING_PRODUCT}" in
+                PingDirectory)
+                    echo "This instance (${_podInstanceName}) is already found in topology --> No need to enable replication"
+                    dsreplication status --displayServerTable --showAll
+                    ;;
+                PingDataSync)
+                    echo "This instance (${_podInstanceName}) is already found in topology --> No need to enable failover"
+                    ;;
+                PingDirectoryProxy)
+                    echo "This instance (${_podInstanceName}) is already found in topology --> No need to enable automatic backend discovery"
+                    ;;
+            esac
             return 1
         fi
+    fi
+
+    # For now proxy doesn't have a notion of a seed server, so the rest of this method isn't needed
+    if test "${PING_PRODUCT}" = "PingDirectoryProxy"; then
+        return 0
     fi
 
     #
     #- * If the server being setup is the Seed Instance, then no replication or failover will be performed
     #
-    #TODO handle proxy
     if test "${_podInstanceName}" = "${_seedInstanceName}"; then
         echo ""
         if test "${PING_PRODUCT}" = "PingDirectory"; then

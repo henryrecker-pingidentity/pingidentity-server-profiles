@@ -18,12 +18,17 @@ RUN_PLAN="UNKNOWN"
 
 SERVER_UUID_FILE="${SERVER_ROOT_DIR}/config/server.uuid"
 
+# Ignore shellcheck SC2034 here because shellcheck sees these variables as unused. The values
+# are passed in to export_container_env below.
+
 if test -f "${SERVER_UUID_FILE}"; then
     RUN_PLAN="RESTART"
 else
+    # shellcheck disable=SC2034
     RUN_PLAN="START"
 fi
 
+# shellcheck disable=SC2034
 INSTANCE_NAME=$(getPingDataInstanceName)
 
 echo_header "Run Plan Information"
