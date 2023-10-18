@@ -1446,7 +1446,7 @@ prepareToJoinTopology() {
     fi
     manage-topology export \
         --hostname "${_targetHostname}" \
-        --port "${_targetHostname}" \
+        --port "${_targetLdapsPort}" \
         --exportFilePath "${_priorTopoFile}"
     _priorNumInstances=$(jq ".serverInstances | length" "${_priorTopoFile}")
 
