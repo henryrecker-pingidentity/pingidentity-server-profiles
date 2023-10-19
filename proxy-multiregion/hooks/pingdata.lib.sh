@@ -1547,30 +1547,30 @@ prepareToJoinTopology() {
     #
     #- * Determine the Master Topology server to use to enable with
     #
-    if test "${_priorNumInstances}" -eq 1; then
-        if test "${PING_PRODUCT}" = "PingDirectory"; then
-            echo "Only 1 instance (${MASTER_TOPOLOGY_INSTANCE}) found in current topology.  Adding 1st replica"
-        else
-            echo "Only 1 instance (${MASTER_TOPOLOGY_INSTANCE}) found in current topology.  Adding 1st failover server"
-        fi
-    else
-        if test "${MASTER_TOPOLOGY_INSTANCE}" = "${_seedInstanceName}"; then
-            echo "Seed Instance is the Topology Master Instance"
-            MASTER_TOPOLOGY_HOSTNAME="${SEED_HOSTNAME}"
-            MASTER_TOPOLOGY_LDAPS_PORT="${SEED_LDAPS_PORT}"
-            if test "${PING_PRODUCT}" = "PingDirectory"; then
-                MASTER_TOPOLOGY_REPLICATION_PORT="${_seedReplicationPort}"
-            fi
-        else
-            echo "Topology master instance (${MASTER_TOPOLOGY_INSTANCE}) isn't seed instance (${_seedInstanceName})"
+    # if test "${_priorNumInstances}" -eq 1; then
+    #     if test "${PING_PRODUCT}" = "PingDirectory"; then
+    #         echo "Only 1 instance (${MASTER_TOPOLOGY_INSTANCE}) found in current topology.  Adding 1st replica"
+    #     else
+    #         echo "Only 1 instance (${MASTER_TOPOLOGY_INSTANCE}) found in current topology.  Adding 1st failover server"
+    #     fi
+    # else
+    #     if test "${MASTER_TOPOLOGY_INSTANCE}" = "${_seedInstanceName}"; then
+    #         echo "Seed Instance is the Topology Master Instance"
+    #         MASTER_TOPOLOGY_HOSTNAME="${SEED_HOSTNAME}"
+    #         MASTER_TOPOLOGY_LDAPS_PORT="${SEED_LDAPS_PORT}"
+    #         if test "${PING_PRODUCT}" = "PingDirectory"; then
+    #             MASTER_TOPOLOGY_REPLICATION_PORT="${_seedReplicationPort}"
+    #         fi
+    #     else
+    #         echo "Topology master instance (${MASTER_TOPOLOGY_INSTANCE}) isn't seed instance (${_seedInstanceName})"
 
-            MASTER_TOPOLOGY_HOSTNAME=$(jq -r ".serverInstances[] | select(.instanceName==\"${MASTER_TOPOLOGY_INSTANCE}\") | .hostname" "${_priorTopoFile}")
-            MASTER_TOPOLOGY_LDAPS_PORT=$(jq ".serverInstances[] | select(.instanceName==\"${MASTER_TOPOLOGY_INSTANCE}\") | .ldapsPort" "${_priorTopoFile}")
-            if test "${PING_PRODUCT}" = "PingDirectory"; then
-                MASTER_TOPOLOGY_REPLICATION_PORT=$(jq ".serverInstances[] | select(.instanceName==\"${MASTER_TOPOLOGY_INSTANCE}\") | .replicationPort" "${_priorTopoFile}")
-            fi
-        fi
-    fi
+    #         MASTER_TOPOLOGY_HOSTNAME=$(jq -r ".serverInstances[] | select(.instanceName==\"${MASTER_TOPOLOGY_INSTANCE}\") | .hostname" "${_priorTopoFile}")
+    #         MASTER_TOPOLOGY_LDAPS_PORT=$(jq ".serverInstances[] | select(.instanceName==\"${MASTER_TOPOLOGY_INSTANCE}\") | .ldapsPort" "${_priorTopoFile}")
+    #         if test "${PING_PRODUCT}" = "PingDirectory"; then
+    #             MASTER_TOPOLOGY_REPLICATION_PORT=$(jq ".serverInstances[] | select(.instanceName==\"${MASTER_TOPOLOGY_INSTANCE}\") | .replicationPort" "${_priorTopoFile}")
+    #         fi
+    #     fi
+    # fi
 
     test -n "${MASTER_TOPOLOGY_HOSTNAME}" && export MASTER_TOPOLOGY_HOSTNAME
     test -n "${MASTER_TOPOLOGY_LDAPS_PORT}" && export MASTER_TOPOLOGY_LDAPS_PORT
