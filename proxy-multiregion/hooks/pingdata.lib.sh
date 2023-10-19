@@ -1535,47 +1535,17 @@ prepareToJoinTopology() {
     fi
 
     #
-    #- * Get the current Topology Master
+    #- * Get the server that will be used with dsreplication or manage-topology
     #
-    MASTER_TOPOLOGY_INSTANCE=$(ldapsearch --hostname "${SEED_HOSTNAME}" --port "${SEED_LDAPS_PORT}" --terse --outputFormat json -b "cn=Mirrored subtree manager for base DN cn_Topology_cn_config,cn=monitor" -s base objectclass=* master-instance-name | jq -r .attributes[].values[])
-    MASTER_TOPOLOGY_HOSTNAME="${SEED_HOSTNAME}"
-    MASTER_TOPOLOGY_LDAPS_PORT="${SEED_LDAPS_PORT}"
+    REMOTE_SERVER_HOSTNAME="${SEED_HOSTNAME}"
+    REMOTE_SERVER_LDAPS_PORT="${SEED_LDAPS_PORT}"
     if test "${PING_PRODUCT}" = "PingDirectory"; then
-        MASTER_TOPOLOGY_REPLICATION_PORT="${_seedReplicationPort:?}"
+        REMOTE_SERVER_REPLICATION_PORT="${_seedReplicationPort:?}"
     fi
 
-    #
-    #- * Determine the Master Topology server to use to enable with
-    #
-    # if test "${_priorNumInstances}" -eq 1; then
-    #     if test "${PING_PRODUCT}" = "PingDirectory"; then
-    #         echo "Only 1 instance (${MASTER_TOPOLOGY_INSTANCE}) found in current topology.  Adding 1st replica"
-    #     else
-    #         echo "Only 1 instance (${MASTER_TOPOLOGY_INSTANCE}) found in current topology.  Adding 1st failover server"
-    #     fi
-    # else
-    #     if test "${MASTER_TOPOLOGY_INSTANCE}" = "${_seedInstanceName}"; then
-    #         echo "Seed Instance is the Topology Master Instance"
-    #         MASTER_TOPOLOGY_HOSTNAME="${SEED_HOSTNAME}"
-    #         MASTER_TOPOLOGY_LDAPS_PORT="${SEED_LDAPS_PORT}"
-    #         if test "${PING_PRODUCT}" = "PingDirectory"; then
-    #             MASTER_TOPOLOGY_REPLICATION_PORT="${_seedReplicationPort}"
-    #         fi
-    #     else
-    #         echo "Topology master instance (${MASTER_TOPOLOGY_INSTANCE}) isn't seed instance (${_seedInstanceName})"
-
-    #         MASTER_TOPOLOGY_HOSTNAME=$(jq -r ".serverInstances[] | select(.instanceName==\"${MASTER_TOPOLOGY_INSTANCE}\") | .hostname" "${_priorTopoFile}")
-    #         MASTER_TOPOLOGY_LDAPS_PORT=$(jq ".serverInstances[] | select(.instanceName==\"${MASTER_TOPOLOGY_INSTANCE}\") | .ldapsPort" "${_priorTopoFile}")
-    #         if test "${PING_PRODUCT}" = "PingDirectory"; then
-    #             MASTER_TOPOLOGY_REPLICATION_PORT=$(jq ".serverInstances[] | select(.instanceName==\"${MASTER_TOPOLOGY_INSTANCE}\") | .replicationPort" "${_priorTopoFile}")
-    #         fi
-    #     fi
-    # fi
-
-    test -n "${MASTER_TOPOLOGY_HOSTNAME}" && export MASTER_TOPOLOGY_HOSTNAME
-    test -n "${MASTER_TOPOLOGY_LDAPS_PORT}" && export MASTER_TOPOLOGY_LDAPS_PORT
-    test -n "${MASTER_TOPOLOGY_REPLICATION_PORT}" && export MASTER_TOPOLOGY_REPLICATION_PORT
-    test -n "${MASTER_TOPOLOGY_INSTANCE}" && export MASTER_TOPOLOGY_INSTANCE
+    export REMOTE_SERVER_HOSTNAME
+    export REMOTE_SERVER_LDAPS_PORT
+    test -n "${REMOTE_SERVER_REPLICATION_PORT}" && export REMOTE_SERVER_REPLICATION_PORT
 }
 
 # Call the remove-defunct-server command on this server

@@ -37,14 +37,12 @@ echo_bar
 
 export_container_env RUN_PLAN INSTANCE_NAME
 
-# Set run plan for joining PD topology if necessary
+# Only need to set run plan when joining a PingDirectory topology
 if test "$(toLower "${JOIN_PD_TOPOLOGY}")" != "true"; then
     echo "Backend discovery for PingDirectoryProxy will not be configured, because JOIN_PD_TOPOLOGY is not set to true."
     exit 0
 fi
 
-#TODO calculate this rather than requiring a single value - allow for connecting to any running PD for add-server
-# Build a topology.json file maybe?
 if test -z "${PINGDIRECTORY_HOSTNAME}" ||
     test -z "${PINGDIRECTORY_LDAPS_PORT}"; then
     container_failure 3 "One of PINGDIRECTORY_HOSTNAME: (${PINGDIRECTORY_HOSTNAME}), PINGDIRECTORY_LDAPS_PORT: (${PINGDIRECTORY_LDAPS_PORT}) aren't set. These variables must be set when JOIN_PD_TOPOLOGY is true."

@@ -14,15 +14,14 @@ test "${VERBOSE}" = "true" && set -x
 # shellcheck source=../../../../pingdatacommon/opt/staging/hooks/pingdata.lib.sh
 . "${HOOKS_DIR}/pingdata.lib.sh"
 
-# Check availability and set variables necessary for enabling backend discovery
+# This hook is only needed when joining a PD topology for automatic backend discovery
 if test "$(toLower "${JOIN_PD_TOPOLOGY}")" != "true"; then
     exit 0
 fi
 
 if ! prepareToJoinTopology; then
     echo "Backend discovery for PingDirectoryProxy will not be configured."
-    #TODO set unavailable in an earlier hook for proxy? if so, need another set available call above
-    #set_server_available online
+    set_server_available online
 
     exit 0
 fi
@@ -39,8 +38,6 @@ waitUntilLdapUp "${_podName}" "${POD_LDAPS_PORT}" ""
 printf "
 #############################################
 # Enabling PingDirectoryProxy Backend Discovery
-#
-# Current PingDirectory Topology Instance: ${PINGDIRECTORY_HOSTNAME}
 #
 #   %60s        %-60s
 #   %60s  <-->  %-60s
@@ -78,6 +75,8 @@ echo "Automatic backend discovery configuration for POD Server result=${_addServ
 
 if test ${_addServerResult} -ne 0; then
     echo "Failed to configure Proxy automatic backend discovery."
+else
+    set_server_available online
 fi
 
 exit ${_addServerResult}
