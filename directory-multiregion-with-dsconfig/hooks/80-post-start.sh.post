@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+#
+# This script associates the PingDirectory instance in the topology registry
+# with a load-balancing algorithm that should be configured on the Proxy instance(s).
+#
+# This can't be done in the normal dsconfig of a server profile because configuration
+# of the server instance can only be done after the server has been started for the
+# first time.
+#
+test "${VERBOSE}" = "true" && set -x
+
+# shellcheck source=../../../../pingcommon/opt/staging/hooks/pingcommon.lib.sh
+. "${HOOKS_DIR}/pingcommon.lib.sh"
+
+# shellcheck source=../../../../pingdatacommon/opt/staging/hooks/pingdata.lib.sh
+. "${HOOKS_DIR}/pingdata.lib.sh"
+
+echo "Configuration load balancing algorithms for instance ${INSTANCE_NAME}"
+dsconfig set-server-instance-prop \
+    --instance-name "${INSTANCE_NAME}" \
+    --add load-balancing-algorithm-name:dc_example_dc_com-fewest-operations \
+    --add load-balancing-algorithm-name:dc_example_dc_com-failover
+
+if test $? -ne 0; then
+    echo "Failed to configure load balancing algorithms"
+else
+    echo "Load balancing algorithms configured"
+fi
