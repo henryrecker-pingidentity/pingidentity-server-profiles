@@ -16,10 +16,11 @@ test "${VERBOSE}" = "true" && set -x
 . "${HOOKS_DIR}/pingdata.lib.sh"
 
 echo "Configuration load balancing algorithms for instance ${INSTANCE_NAME}"
-dsconfig set-server-instance-prop \
+dsconfig set-server-instance-prop --no-prompt --quiet \
     --instance-name "${INSTANCE_NAME}" \
     --add load-balancing-algorithm-name:dc_example_dc_com-fewest-operations \
     --add load-balancing-algorithm-name:dc_example_dc_com-failover
+
 
 if test $? -ne 0; then
     echo "Failed to configure load balancing algorithms"
