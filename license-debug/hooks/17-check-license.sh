@@ -60,24 +60,7 @@ else
             echo "    DevOps User: ${PING_IDENTITY_DEVOPS_USER}..."
 
             set -x
-            curl \
-                    --get \
-                    --silent \
-                    --show-error \
-                    --write-out '%{http_code}' \
-                    --location \
-                    --connect-timeout 2 \
-                    --retry 6 \
-                    --retry-max-time 30 \
-                    --retry-delay 3 \
-                    --header "product: ${LICENSE_SHORT_NAME}" \
-                    --header "version: ${LICENSE_VERSION}" \
-                    --header "devops-user: ${PING_IDENTITY_DEVOPS_USER}" \
-                    --header "devops-key: ${PING_IDENTITY_DEVOPS_KEY}" \
-                    --header "devops-app: ${IMAGE_VERSION}" \
-                    --header "devops-purpose: get-license" \
-                    "${_licenseAPI}" \
-                    --output "${LICENSE_FILE}"
+            curl --get --silent --show-error --write-out '%{http_code}' --location --connect-timeout 2 --retry 6 --retry-max-time 30 --retry-delay 3 --header "product: ${LICENSE_SHORT_NAME}" --header "version: ${LICENSE_VERSION}" --header "devops-user: ${PING_IDENTITY_DEVOPS_USER}" --header "devops-key: ${PING_IDENTITY_DEVOPS_KEY}" --header "devops-app: ${IMAGE_VERSION}" --header "devops-purpose: get-license" "${_licenseAPI}" --output "${LICENSE_FILE}"
             set +x
 
             echo "Waiting forever"
