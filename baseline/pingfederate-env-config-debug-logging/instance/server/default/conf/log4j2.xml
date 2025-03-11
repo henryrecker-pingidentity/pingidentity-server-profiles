@@ -1560,80 +1560,80 @@
         under Server > General Settings, or via the administrative API.
         -->
 
-        <Logger name="org.sourceid" level="${sys:pf.log.level.core:-DEBUG}" />
-        <Logger name="com.pingidentity" level="${sys:pf.log.level.core:-DEBUG}" />
+        <Logger name="org.sourceid" level="DEBUG" />
+        <Logger name="com.pingidentity" level="DEBUG" />
 
-        <Logger name="org.sourceid.saml20.util.SystemUtil" level="${sys:pf.log.level.core:-DEBUG}" additivity="false">
+        <Logger name="org.sourceid.saml20.util.SystemUtil" level="${sys:pf.log.level.core:-INFO}" additivity="false">
             <AppenderRef ref="CONSOLE" />
             <AppenderRef ref="FILE" />
         </Logger>
-        <Logger name="com.pingidentity.common.util.ErrorHandler" level="${sys:pf.log.level.core:-DEBUG}" additivity="false">
+        <Logger name="com.pingidentity.common.util.ErrorHandler" level="${sys:pf.log.level.core:-INFO}" additivity="false">
             <AppenderRef ref="CONSOLE" />
             <AppenderRef ref="FILE" />
         </Logger>
 
-        <Logger name="org.sourceid.util.log.PolicyTreeLogger" level="${sys:pf.log.level.policytree:-DEBUG}" />
-        <Logger name="org.sourceid.saml20.domain.mgmt.impl.TrustedCAsManagerImpl" level="${sys:pf.log.level.trustedcas:-DEBUG}" />
-        <Logger name="org.sourceid.common.dsig" level="${sys:pf.log.level.xmlsig:-DEBUG}" />
-        <Logger name="com.pingidentity.common.util.timers.EventTimer" level="${sys:pf.log.level.dsresponsetime:-DEBUG}" />
+        <Logger name="org.sourceid.util.log.PolicyTreeLogger" level="${sys:pf.log.level.policytree:-INFO}" />
+        <Logger name="org.sourceid.saml20.domain.mgmt.impl.TrustedCAsManagerImpl" level="${sys:pf.log.level.trustedcas:-INFO}" />
+        <Logger name="org.sourceid.common.dsig" level="${sys:pf.log.level.xmlsig:-INFO}" />
+        <Logger name="com.pingidentity.common.util.timers.EventTimer" level="${sys:pf.log.level.dsresponsetime:-INFO}" />
 
         <!--
             This logger logs all HTTP request header values at TRACE level.
             WARNING: This is intended for debugging purposes only. Sensitive information, such as passwords, may be
             logged when the level of this logger is set to TRACE.
         -->
-        <Logger name="org.sourceid.servlet.filter.HttpRequestHeaderFilter" level="${sys:pf.log.level.requestheaders:-DEBUG}" />
+        <Logger name="org.sourceid.servlet.filter.HttpRequestHeaderFilter" level="${sys:pf.log.level.requestheaders:-INFO}" />
         <!--
             This logger logs all HTTP GET request parameter values at TRACE level.
             WARNING: This is intended for debugging purposes only. Sensitive information, such as passwords, may be
             logged when the level of this logger is set to TRACE.
         -->
-        <Logger name="org.sourceid.servlet.filter.HttpRequestParameterFilter" level="${sys:pf.log.level.requestparams:-DEBUG}" />
+        <Logger name="org.sourceid.servlet.filter.HttpRequestParameterFilter" level="${sys:pf.log.level.requestparams:-INFO}" />
         <!--
             This logger logs requests and responses from REST data stores at TRACE level.
             WARNING: This is intended for debugging purposes only. Sensitive information, such as passwords, may be
             logged when the level of this Logger is set to TRACE.
         -->
-        <Logger name="com.pingidentity.pf.datastore.other" level="${sys:pf.log.level.restdatastore:-DEBUG}" />
+        <Logger name="com.pingidentity.pf.datastore.other" level="${sys:pf.log.level.restdatastore:-INFO}" />
 
-        <Logger name="org.sourceid.saml20.bindings.LoggingInterceptor" level="${sys:pf.log.level.protocolrequestresponse:-DEBUG}" />
+        <Logger name="org.sourceid.saml20.bindings.LoggingInterceptor" level="${sys:pf.log.level.protocolrequestresponse:-INFO}" />
 
         <!-- Limit 3rd party dependencies -->
-        <Logger name="org.apache" level="DEBUG" />
-        <Logger name="org.apache.http.wire" level="DEBUG" />
-        <Logger name="org.apache.hivemind" level="DEBUG" />
-        <Logger name="org.apache.axis" level="DEBUG" />
-        <Logger name="org.apache.velocity" level="DEBUG" />
-        <Logger name="hsqldb.db" level="DEBUG" />
-        <Logger name="com.jolbox" level="DEBUG" />
+        <Logger name="org.apache" level="INFO" />
+        <Logger name="org.apache.http.wire" level="INFO" />
+        <Logger name="org.apache.hivemind" level="INFO" />
+        <Logger name="org.apache.axis" level="INFO" />
+        <Logger name="org.apache.velocity" level="INFO" />
+        <Logger name="hsqldb.db" level="ERROR" />
+        <Logger name="com.jolbox" level="OFF" />
 
         <!-- Limit Amazon AWS SDK logging -->
-        <Logger name="com.amazonaws" level="DEBUG" />
+        <Logger name="com.amazonaws" level="INFO" />
 
         <!-- Limit Jetty -->
-        <Logger name="org.eclipse.jetty" level="DEBUG" />
-        <Logger name="org.eclipse.jetty.io.nio" level="DEBUG" />
-        <Logger name="org.eclipse.jetty.jmx.ObjectMBean" level="DEBUG" />
-        <Logger name="org.eclipse.jetty.server.session" level="DEBUG" />
+        <Logger name="org.eclipse.jetty" level="INFO" />
+        <Logger name="org.eclipse.jetty.io.nio" level="ERROR" />
+        <Logger name="org.eclipse.jetty.jmx.ObjectMBean" level="ERROR" />
+        <Logger name="org.eclipse.jetty.server.session" level="WARN" />
 
         <!-- Limit JGroups -->
-        <Logger name="org.jgroups" level="DEBUG" />
+        <Logger name="org.jgroups" level="INFO" />
 
         <!-- Limit AWS_PING -->
-        <Logger name="com.pingidentity.aws" level="DEBUG" />
+        <Logger name="com.pingidentity.aws" level="INFO" />
 
         <!-- ==================================== -->
         <!-- Loggers mapped to specific appenders -->
         <!-- ==================================== -->
 
         <AsyncLogger name="org.sourceid.saml20.bindings.BindingLogProxy"
-                     level="DEBUG" additivity="false" includeLocation="false">
+                     level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="SamlTransaction" />
             <!-- <appender-ref ref="SamlTransaction-JSON" /> -->
             <!-- <appender-ref ref="CONSOLE-SamlTransaction-JSON" /> -->
         </AsyncLogger>
 
-        <AsyncLogger name="ThreadDumpLogger" level="DEBUG" additivity="false" includeLocation="false">
+        <AsyncLogger name="ThreadDumpLogger" level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="ThreadDumpAppender" />
             <!-- <appender-ref ref="ThreadDumpAppender-JSON" /> -->
             <!-- <appender-ref ref="CONSOLE-ThreadDumpAppender-JSON" /> -->
@@ -1655,7 +1655,7 @@
             "SecurityAudit2File-JSON" and "CONSOLE-SecurityAudit-JSON".
         -->
         <Logger name="org.sourceid.websso.profiles.sp.SpAuditLogger"
-                level="DEBUG" additivity="false" includeLocation="false">
+                level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="SecurityAudit2File" />
             <!--
                 <appender-ref ref="SecurityAudit2File-JSON" />
@@ -1686,7 +1686,7 @@
             "SecurityAudit2File-JSON" and "CONSOLE-SecurityAudit-JSON".
         -->
         <Logger name="org.sourceid.websso.profiles.idp.IdpAuditLogger"
-                level="DEBUG" additivity="false" includeLocation="false">
+                level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="SecurityAudit2File" />
             <!--
                 <appender-ref ref="SecurityAudit2File-JSON" />
@@ -1717,7 +1717,7 @@
             "SecurityAudit2File-JSON" and "CONSOLE-SecurityAudit-JSON".
         -->
         <Logger name="org.sourceid.websso.profiles.idp.AsAuditLogger"
-                level="DEBUG" additivity="false" includeLocation="false">
+                level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="SecurityAudit2File" />
             <!--
                 <appender-ref ref="SecurityAudit2File-JSON" />
@@ -1748,7 +1748,7 @@
             "SecurityAudit2File-JSON" and "CONSOLE-SecurityAudit-JSON".
         -->
         <Logger name="org.sourceid.websso.profiles.idp.ClientRegistrationAuditLogger"
-                level="DEBUG" additivity="false" includeLocation="false">
+                level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="SecurityAudit2File" />
             <!--
                 <appender-ref ref="SecurityAudit2File-JSON" />
@@ -1779,7 +1779,7 @@
             "SecurityAudit2File-JSON" and "CONSOLE-SecurityAudit-JSON".
         -->
         <Logger name="org.sourceid.wstrust.log.STSAuditLogger"
-                level="DEBUG" additivity="false" includeLocation="false">
+                level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="SecurityAudit2File" />
             <!--
                 <appender-ref ref="SecurityAudit2File-JSON" />
@@ -1809,7 +1809,7 @@
             If one of these appenders is added, remove the existing reference to "SecurityAudit2File",
             "SecurityAudit2File-JSON" and "CONSOLE-SecurityAudit-JSON".
         -->
-        <Logger name="com.pingidentity.sdk.logging.LoggingUtil" level="DEBUG" additivity="false" includeLocation="false">
+        <Logger name="com.pingidentity.sdk.logging.LoggingUtil" level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="SecurityAudit2File" />
             <!--
                 <appender-ref ref="SecurityAudit2File-JSON" />
@@ -1839,7 +1839,7 @@
             "ProvisionerLog-JSON", "CONSOLE-PROVISIONER" and "CONSOLE-PROVISIONER-JSON".
         -->
         <AsyncLogger name="com.pingidentity.provisioner"
-                     level="DEBUG" additivity="false" includeLocation="false">
+                     level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="ProvisionerLog" />
             <!--
                 <appender-ref ref="ProvisionerLog-JSON" />
@@ -1867,7 +1867,7 @@
             "ProvisionerChannelSummaryLog-JSON", "CONSOLE-PROVISIONER" and "CONSOLE-PROVISIONER-JSON".
         -->
         <AsyncLogger name="ProvisionerChannelSummaryLog"
-                     level="DEBUG" additivity="false" includeLocation="false">
+                     level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="ProvisionerChannelSummaryLog" />
             <!--
                 <appender-ref ref="ProvisionerChannelSummaryLog-JSON" />
@@ -1880,25 +1880,25 @@
             -->
         </AsyncLogger>
 
-        <Logger name="AuditLogger" level="DEBUG" additivity="false" includeLocation="false">
+        <Logger name="AuditLogger" level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="AdminAudit" />
             <!-- <appender-ref ref="AdminAudit-JSON" /> -->
             <!-- <appender-ref ref="CONSOLE-AdminAudit-JSON" /> -->
         </Logger>
 
-        <Logger name="EventDetailAuditLogger" level="DEBUG" additivity="false" includeLocation="false">
+        <Logger name="EventDetailAuditLogger" level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="AdminEventDetailAudit" />
             <!-- <appender-ref ref="AdminEventDetailAudit-JSON" /> -->
             <!-- <appender-ref ref="CONSOLE-AdminEventDetailAudit-JSON" /> -->
         </Logger>
 
-        <Logger name="AdminApiAuditLogger" level="DEBUG" additivity="false" includeLocation="false">
+        <Logger name="AdminApiAuditLogger" level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="AdminApiAudit" />
             <!-- <appender-ref ref="AdminApiAudit-JSON" /> -->
             <!-- <appender-ref ref="CONSOLE-AdminApiAudit-JSON" /> -->
         </Logger>
 
-        <Logger name="RuntimeApiAuditLogger" level="DEBUG" additivity="false" includeLocation="false">
+        <Logger name="RuntimeApiAuditLogger" level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="RuntimeApiAudit" />
             <!-- <appender-ref ref="RuntimeApiAudit-JSON" /> -->
             <!-- <appender-ref ref="CONSOLE-RuntimeApiAudit-JSON" /> -->
@@ -1923,7 +1923,7 @@
         "OutboundProvisionerEventToFile-JSON" and "CONSOLE-OutboundProvisionerEventToFile-JSON".
         -->
 
-        <Logger name="ProvisionerAuditLogger" level="DEBUG" additivity="false" includeLocation="false">
+        <Logger name="ProvisionerAuditLogger" level="INFO" additivity="false" includeLocation="false">
             <appender-ref ref="OutboundProvisionerEventToFile" />
             <!--
             <appender-ref ref="OutboundProvisionerEventToFile-JSON" />
@@ -1948,7 +1948,7 @@
 
             For database logging, comment the <AsyncRoot> block and uncomment the <Root> block.
         -->
-        <AsyncRoot level="DEBUG" includeLocation="false">
+        <AsyncRoot level="INFO" includeLocation="false">
             <!-- <AppenderRef ref="CONSOLE" /> -->
             <!-- <AppenderRef ref="CONSOLE-JSON" />-->
             <AppenderRef ref="FILE" />
@@ -1962,7 +1962,7 @@
             will determine how often events are flushed to the database.
         -->
         <!--
-        <Root level="DEBUG" includeLocation="false">
+        <Root level="INFO" includeLocation="false">
             <AppenderRef ref="ServerLogToOracleDB-FAILOVER" />
             <AppenderRef ref="ServerLogToSQLServerDB-FAILOVER" />
             <AppenderRef ref="ServerLogToMySQLDB-FAILOVER" />
